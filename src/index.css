@@ -1,0 +1,265 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-body: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  --color-ink: #0e1f1d;
+  --color-cream: #faf6ee;
+  --color-sand: #f2ebdc;
+  --color-sand-deep: #e6dcc4;
+  --color-pine-950: #0b241f;
+  --color-pine-900: #103129;
+  --color-pine-800: #17453a;
+  --color-pine-700: #1e5a4b;
+  --color-pine-600: #2a715d;
+  --color-pine-500: #37876f;
+  --color-pine-100: #d9e7e0;
+  --color-amber: #e8a33d;
+  --color-amber-deep: #b97b16;
+  --color-terra: #d96f4e;
+  --color-mist: #5d6f69;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-cream text-ink font-body antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-amber) 38%, transparent);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-amber);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ---------- Signature motion ---------- */
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes flapIn {
+  from {
+    transform: rotateX(88deg);
+    opacity: 0;
+  }
+  to {
+    transform: rotateX(0deg);
+    opacity: 1;
+  }
+}
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes kenburns {
+  from {
+    transform: scale(1.03);
+  }
+  to {
+    transform: scale(1.12) translate(-1.4%, 1%);
+  }
+}
+@keyframes floatY {
+  from {
+    transform: translateY(-7px);
+  }
+  to {
+    transform: translateY(9px);
+  }
+}
+@keyframes spinSlow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes dashDrift {
+  to {
+    stroke-dashoffset: -640;
+  }
+}
+@keyframes pulseDot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+@keyframes drift {
+  from {
+    transform: translate3d(-2%, -1.5%, 0) scale(1);
+  }
+  to {
+    transform: translate3d(2.5%, 2%, 0) scale(1.07);
+  }
+}
+
+.anim-marquee {
+  animation: marquee 38s linear infinite;
+}
+.marquee:hover .anim-marquee {
+  animation-play-state: paused;
+}
+.anim-kenburns {
+  animation: kenburns 16s ease-in-out infinite alternate;
+  will-change: transform;
+}
+.anim-float {
+  animation: floatY 6s ease-in-out infinite alternate;
+}
+.anim-spin-slow {
+  animation: spinSlow 28s linear infinite;
+}
+.anim-dash {
+  animation: dashDrift 22s linear infinite;
+}
+.anim-drift {
+  animation: drift 18s ease-in-out infinite alternate;
+  will-change: transform;
+}
+.dot-pulse {
+  animation: pulseDot 1.7s ease-in-out infinite;
+}
+.flap-word {
+  display: inline-block;
+  animation: flapIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: 50% 100%;
+  backface-visibility: hidden;
+}
+.card-in {
+  animation: cardIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Line-mask reveal */
+.mask-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+.mask-line > span {
+  display: block;
+  transform: translateY(115%);
+  transition: transform 1.05s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.is-in .mask-line > span {
+  transform: none;
+}
+
+/* Navbar link underline */
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nav-link:hover::after,
+.nav-link:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+/* Button shine sweep */
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+}
+.btn-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-130%) skewX(-18deg);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+  transition: transform 0.7s ease;
+  pointer-events: none;
+}
+.btn-shine:hover::after,
+.btn-shine:focus-visible::after {
+  transform: translateX(130%);
+}
+
+/* Film grain overlay */
+.noise {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+}
+
+/* Perforation for boarding-pass card */
+.perforated {
+  background-image: radial-gradient(circle at 8px 50%, transparent 5px, rgba(14, 31, 29, 0.14) 5px, rgba(14, 31, 29, 0.14) 5.6px, transparent 5.6px);
+  background-size: 16px 100%;
+  background-repeat: repeat-y;
+  background-position: left;
+}
+
+/* Hide horizontal scrollbar on the departures board */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal,
+  .mask-line > span {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
